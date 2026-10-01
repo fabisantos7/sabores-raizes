@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabores &amp; Raízes — cozinha afetiva brasileira</title>
+<meta name="description" content="Um caderno vivo de receitas de família brasileiras — coletadas em fogões a lenha, quintais e mesas de domingo.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23BC4B24'/><text x='50' y='74' font-size='64' text-anchor='middle' fill='%23F3ECDE' font-family='Georgia' font-style='italic'>S</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- ═══ CSS do projeto (arquivo separado) ═══ -->
+<link rel="stylesheet" href="./style.css">
+<script src="./script.js"></script>
+</head>
+<!-- body.loading: classe inicial que o jQuery troca por .ready depois do preloader -->
+<body class="loading">
+
+<div id="progress"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-dot"></div>
+<!-- #float-img: posição controlada pelo jQuery no loop do cursor (css transform) -->
+<div id="float-img"><img class="js-photo" alt=""></div>
+
+<!-- ═══════════════ PRELOADER ═══════════════
+     jQuery: após 1.5s → $('#preloader').addClass('done') + remove()
+     e $('body').removeClass('loading').addClass('ready')
+     (se o JS falhar, o CSS faz ele sair sozinho após 5s) -->
+<div id="preloader" aria-hidden="true">
+  <span class="pre-line"><span class="pre-word w1">Sabores</span></span>
+  <span class="pre-line"><span class="pre-word w2">&amp;</span></span>
+  <span class="pre-line"><span class="pre-word w3">Raízes</span></span>
+  <span class="pre-sub">Cozinha afetiva brasileira</span>
+</div>
+
+<!-- ═══════════════ NAVEGAÇÃO ═══════════════
+     jQuery: toggleClass('scrolled') no scroll · clique abre o drawer
+     #nav-badge: texto/escondido via .text() e .hide() -->
+<header id="site-nav">
+  <div class="container nav-inner">
+    <a href="#hero" class="logo">Sabores <em>&amp;</em> Raízes</a>
+    <!-- âncoras capturadas pelo seletor $('a[href^="#"]') p/ scroll suave -->
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="#manifesto">Manifesto</a>
+      <a href="#indice">O Índice</a>
+      <a href="#raizes">Raízes</a>
+      <a href="#cartas">Cartas</a>
+    </nav>
+    <div class="nav-right">
+      <button id="open-notebook" aria-label="Abrir meu caderno de receitas">
+        <i data-lucide="bookmark"></i><span>Meu caderno</span>
+        <em id="nav-badge">0</em>
+      </button>
+      <button id="menu-toggle" aria-label="Abrir menu">
+        <i data-lucide="menu" class="ic-menu"></i><i data-lucide="x" class="ic-x"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- menu mobile: .open alternado pelo jQuery no clique do hambúrguer -->
+<div id="mobile-menu">
+  <a href="#manifesto"><span>01</span>Manifesto</a>
+  <a href="#indice"><span>02</span>O Índice</a>
+  <a href="#raizes"><span>03</span>Raízes</a>
+  <a href="#cartas"><span>04</span>Cartas</a>
+</div>
+
+<main>
+  <!-- HERO — fotos reais via API do Wikipédia: cada <img class="js-photo">
+       nasce SEM src; o jQuery busca a foto do artigo indicado em data-slot -->
+  <section id="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-label mono">Cozinha afetiva brasileira</div>
+        <h1 class="hero-title">
+          <span class="ht-line"><span class="ht-in">Sabores</span></span>
+          <span class="ht-line"><span class="ht-in">que carregam</span></span>
+          <span class="ht-line"><span class="ht-in"><em>raízes.</em></span></span>
+        </h1>
+        <p class="hero-p">Um caderno vivo de receitas de família — coletadas em fogões a lenha, quintais e mesas de domingo. Escolha uma, arregaçe as mangas e venha cozinhar com a gente.</p>
+        <div class="hero-ctas">
+          <a href="#indice" class="btn btn-solid">Abrir o índice <i data-lucide="arrow-down"></i></a>
+          <a href="#manifesto" class="btn btn-line">Nossa história</a>
+        </div>
+      </div>
+      <figure class="hero-figure">
+        <div class="hero-img-frame">
+          <!-- slot heroMain → artigo "Feijoada" -->
+          <img class="js-photo" data-slot="heroMain" data-w="860" data-h="1080"
+               alt="Panelão de feijoada servido à mesa">
+        </div>
+        <div class="hero-img-small">
+          <!-- slot heroSmall → artigo "Fogueira" (reserva: Fogão a lenha) -->
+          <img class="js-photo" data-slot="heroSmall" data-w="520" data-h="400" loading="lazy"
+               alt="Braseiro de fogo aceso">
+          <span>Fogo lento, sem pressa</span>
+        </div>
+        <div class="stamp" aria-hidden="true">
+          <svg class="ring" viewBox="0 0 160 160">
+            <defs><path id="circ" d="M80,80 m-56,0 a56,56 0 1,1 112,0 a56,56 0 1,1 -112,0"/></defs>
+            <text><textPath href="#circ">Receitas de família • feitas com memória • </textPath></text>
+          </svg>
+          <span class="core"><i data-lucide="sprout"></i></span>
+        </div>
+      </figure>
+    </div>
+    <div class="scroll-hint mono"><i data-lucide="arrow-down"></i> Role para sentir o cheiro</div>
+  </section>
+
+  <!-- TICKER (marquee puro de CSS, sem JS) -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <div class="tick-group">
+        <span>Feijão tropeiro</span><i></i><span>Moqueca capixaba</span><i></i><span>Vatapá da vó</span><i></i>
+        <span>Tacacá</span><i></i><span>Barreado</span><i></i><span>Pão de queijo da roça</span><i></i>
+        <span>Arroz com pequi</span><i></i><span>Carne de sol com mandioca</span><i></i>
+      </div>
+      <div class="tick-group">
+        <span>Feijão tropeiro</span><i></i><span>Moqueca capixaba</span><i></i><span>Vatapá da vó</span><i></i>
+        <span>Tacacá</span><i></i><span>Barreado</span><i></i><span>Pão de queijo da roça</span><i></i>
+        <span>Arroz com pequi</span><i></i><span>Carne de sol com mandioca</span><i></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <section id="manifesto" class="sec">
+    <div class="container">
+      <div class="sec-head reveal"><span class="sec-num">01</span><span class="sec-rule"></span><span class="sec-label">O nosso porquê</span></div>
+      <div class="manifesto-grid">
+        <div class="reveal">
+          <p class="manifesto-text">A gente acredita que <mark>comida de verdade</mark> não nasce da pressa. Nasce do cheiro que atravessa o corredor da casa, do panelão de barro herdado da avó, do ingrediente que só dá naquela terra.</p>
+          <p class="manifesto-text">Este site é um caderno aberto para <mark>guardar essas memórias</mark> antes que elas se percam — uma receita de cada vez, sempre com o nome de quem ensinou.</p>
+        </div>
+        <div class="reveal" data-delay="150">
+          <div class="polaroid">
+            <!-- slot polaroid → artigo "Panela de barro" (reservas: Cerâmica, Barro) -->
+            <img class="js-photo" data-slot="polaroid" data-w="640" data-h="800" loading="lazy"
+                 alt="Panela de barro antiga">
+            <span>Panela de barro herdada — três gerações</span>
+          </div>
+        </div>
+      </div>
+      <div class="stats reveal">
+        <!-- data-target: lido pelo jQuery com .data('target') no contador animado -->
+        <div class="stat"><span class="stat-num" data-target="142">0</span><span class="stat-label">receitas registradas em cadernos de família</span></div>
+        <div class="stat"><span class="stat-num" data-target="5">0</span><span class="stat-label">regiões percorridas atrás de ingredientes</span></div>
+        <div class="stat"><span class="stat-num" data-target="3">0</span><span class="stat-label">gerações cozinhando na mesma cozinha</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÍNDICE -->
+  <section id="indice" class="sec">
+    <div class="container">
+      <div class="sec-head reveal"><span class="sec-num">02</span><span class="sec-rule"></span><span class="sec-label">O índice</span></div>
+      <div class="indice-head reveal">
+        <h2 class="sec-title">Receitas do <em>caderno</em></h2>
+        <p class="indice-sub">Passe o cursor pelas linhas para espiar cada prato. Clique para abrir a ficha completa — e guarde no seu caderno o que te chamar para a cozinha.</p>
+      </div>
+      <div class="filter-bar reveal">
+        <!-- data-region: lido pelo jQuery com .data('region') no clique do filtro -->
+        <div class="filters" id="filters">
+          <button class="filter-btn active" data-region="all">Todas</button>
+          <button class="filter-btn" data-region="norte">Norte</button>
+          <button class="filter-btn" data-region="nordeste">Nordeste</button>
+          <button class="filter-btn" data-region="sudeste">Sudeste</button>
+          <button class="filter-btn" data-region="sul">Sul</button>
+          <button class="filter-btn" data-region="centro-oeste">Centro-Oeste</button>
+        </div>
+        <!-- texto atualizado pelo jQuery: $('#list-count').text(...) -->
+        <span id="list-count">08 receitas</span>
+      </div>
+      <div class="list-labels reveal" aria-hidden="true">
+        <span>Nº</span><span>Receita</span><span>Região</span><span>Tempo</span><span>Nível</span><span></span>
+      </div>
+      <!-- ▸ jQuery injeta as linhas aqui: $('#recipe-list').html(rowsHTML()) -->
+      <div id="recipe-list"></div>
+      <div class="list-foot reveal"><i data-lucide="chef-hat"></i> Todas as receitas foram testadas em fogão de verdade</div>
+    </div>
+  </section>
+
+  <!-- RAÍZES -->
+  <section id="raizes" class="sec">
+    <div class="container">
+      <div class="sec-head reveal"><span class="sec-num">03</span><span class="sec-rule"></span><span class="sec-label">Raízes</span></div>
+      <h2 class="sec-title reveal">O que <em>sustenta</em> a mesa</h2>
+      <div class="roots-grid">
+        <article class="root-block rb-a reveal">
+          <div class="root-tag mono"><i data-lucide="flame"></i> R.01 — Fogo</div>
+          <div class="root-img">
+            <!-- slot raizFogo → artigo "Fogão a lenha" (reservas: Fogueira, Fogo) -->
+            <img class="js-photo" data-slot="raizFogo" data-w="900" data-h="1040" loading="lazy"
+                 alt="Fogão a lenha com braseiro aceso">
+          </div>
+          <h3>Fogo de lenha</h3>
+          <p>Nenhuma técnica substitui a paciência do braseiro. O barreado de seis horas, o feijão que apura devagar, o leite que talha no tacho — tudo isso pede tempo, e tempo é o ingrediente que a cidade esqueceu primeiro.</p>
+        </article>
+        <article class="root-block rb-b reveal" data-delay="120">
+          <div class="root-tag mono"><i data-lucide="heart-handshake"></i> R.02 — Mão</div>
+          <div class="root-img">
+            <!-- slot raizMao → artigo "Pão" (reservas: Padaria, Culinária) -->
+            <img class="js-photo" data-slot="raizMao" data-w="880" data-h="580" loading="lazy"
+                 alt="Pão caseiro — a massa que se aprende com as mãos">
+          </div>
+          <h3>Mão que ensina</h3>
+          <p>Receita escrita ajuda, mas o ponto do vatapá, a grossura do mingau e a hora certa de virar o bolo moram na mão de quem já fez mil vezes. A gente cozinha ao lado de quem sabe — e anota depois.</p>
+        </article>
+        <article class="root-block rb-c reveal">
+          <div class="root-tag mono"><i data-lucide="wheat"></i> R.03 — Terra</div>
+          <div class="root-img">
+            <!-- slot raizTerra → artigo "Mandioca" (reserva: Pequi) -->
+            <img class="js-photo" data-slot="raizTerra" data-w="920" data-h="620" loading="lazy"
+                 alt="Raízes de mandioca frescas">
+          </div>
+          <h3>Ingrediente da terra</h3>
+          <p>Pequi, tucupi, mandioca, jiló, pinhão — cada bioma brasileiro tem um sabor que não viaja bem, e é justamente por isso que vale a viagem.</p>
+        </article>
+        <aside class="root-note reveal" data-delay="120">
+          “Cozinhar é repetir, com as próprias mãos, um gesto que nos foi herdado.”
+          <small>— anotação encontrada na última página do caderno da vó</small>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- CITAÇÃO -->
+  <section class="quote-sec">
+    <div class="container">
+      <div class="quote-mark reveal" aria-hidden="true">“</div>
+      <blockquote class="reveal">Receita escrita é só lembrança. A de verdade mora na mão de quem mexe o panelo todos os dias.</blockquote>
+      <div class="quote-by mono reveal">Dona Zefa — Recife, PE — 82 anos</div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER — submit interceptado pelo jQuery (.on('submit') + preventDefault) -->
+  <section id="cartas" class="sec">
+    <div class="container">
+      <div class="sec-head reveal"><span class="sec-num">04</span><span class="sec-rule"></span><span class="sec-label">Cartas da cozinha</span></div>
+      <div class="nl-grid">
+        <div class="nl-text reveal">
+          <h2>Receitas novas, direto na sua <em>caixa de entrada</em>.</h2>
+          <p>Uma carta por mês com uma receita de família, a história por trás dela e o que vale a pena cozinhar na estação. Sem pressa, sem spam — só fome boa.</p>
+        </div>
+        <div class="nl-form-wrap reveal" data-delay="120">
+          <form id="nl-form" novalidate>
+            <label class="mono" for="nl-email">Seu melhor e-mail</label>
+            <div class="nl-row">
+              <!-- valor lido com .val() pelo jQuery -->
+              <input type="email" id="nl-email" placeholder="ex.: maria@cozinha.com.br" autocomplete="email">
+              <button type="submit" aria-label="Assinar as cartas"><i data-lucide="send"></i></button>
+            </div>
+            <p class="nl-error mono" id="nl-error" role="alert"></p>
+          </form>
+          <div class="nl-success" id="nl-success">
+            <i data-lucide="mail-check"></i>
+            <div><strong>Carta confirmada!</strong><span>Olho na caixa de entrada no primeiro domingo do mês.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-top">
+      <div class="foot-brand mono">Um caderno vivo de receitas de família, guardado a sete chaves e aberto a qualquer fome.</div>
+      <nav class="foot-links" aria-label="Rodapé">
+        <a href="#manifesto">Manifesto</a><a href="#indice">Índice</a><a href="#raizes">Raízes</a><a href="#cartas">Cartas</a>
+      </nav>
+      <button id="back-top">Voltar ao topo <i data-lucide="arrow-up"></i></button>
+    </div>
+    <div class="foot-word" aria-hidden="true">Sabores <em>&amp;</em> Raízes</div>
+    <div class="foot-base mono">
+      <span>© 2025 Sabores &amp; Raízes — feito a fogo lento</span>
+      <span>Fotos: Wikipédia/Commons — Ouro Preto, MG — Brasil</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Overlay compartilhado: .on alternado pelo jQuery (modal, drawer) -->
+<div id="scrim"></div>
+
+<!-- ═══════════════ MODAL DE RECEITA ═══════════════
+     Campos preenchidos pelo jQuery com .attr()/.text()/.html()
+     na função openRecipe() · #modal-img nasce sem src -->
+<div id="recipe-modal" role="dialog" aria-modal="true" aria-label="Ficha da receita">
+  <div class="modal-card">
+    <button class="modal-close" id="modal-close" aria-label="Fechar receita"><i data-lucide="x"></i></button>
+    <div class="modal-media"><img id="modal-img" class="js-photo" alt="Foto do prato"></div>
+    <div class="modal-body">
+      <div class="modal-meta-row"><span class="mono" id="modal-num"></span><span class="dot" id="modal-dot"></span><span class="mono" id="modal-region"></span></div>
+      <h3 id="modal-name"></h3>
+      <p id="modal-desc"></p>
+      <div class="modal-facts">
+        <div><span class="fact-label">Tempo</span><span class="fact-val" id="modal-time"></span></div>
+        <div><span class="fact-label">Rende</span><span class="fact-val" id="modal-servings"></span></div>
+        <div><span class="fact-label">Nível</span><span class="fact-val" id="modal-level"></span></div>
+      </div>
+      <div class="modal-cols">
+        <div><h4>Ingredientes</h4><ul id="modal-ingredients"></ul></div>
+        <div><h4>Modo de preparo</h4><ol id="modal-steps"></ol></div>
+      </div>
+      <button class="btn btn-solid" id="modal-save"></button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DRAWER: MEU CADERNO ═══════════════
+     Conteúdo gerado pelo jQuery em renderNotebook() (.html) -->
+<aside id="drawer" aria-label="Meu caderno de receitas">
+  <div class="drawer-head">
+    <h3>Meu caderno</h3><span class="mono" id="drawer-count"></span>
+    <button id="drawer-close" aria-label="Fechar caderno"><i data-lucide="x"></i></button>
+  </div>
+  <div class="drawer-body" id="drawer-items"></div>
+  <div class="drawer-foot mono">Salvo apenas neste navegador — cozinhe sem pressa</div>
+</aside>
+
+<!-- toasts: container que recebe elementos criados via $('<div>') no jQuery -->
+<div id="toasts" aria-live="polite"></div>
+
+<!-- ═══ jQuery 3.7.1 via CDN + fallback jsDelivr (se o 1º falhar) ═══ -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"><\/script>');</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<!-- ═══ Script do projeto (arquivo separado) ═══ -->
+<script src="main.js"></script>
+</body>
+</html>
