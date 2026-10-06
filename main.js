@@ -403,22 +403,21 @@
   });
   $('#recipe-list').on('mouseleave', '.r-row', hideFloat);         // ▸ DELEGAÇÃO
 
-  /* ============ TOASTS ============ */
+/*TIRAR COMENTARIO
   function showToast(msg, icon){
-    /* ▸ DOM: criação de elemento a partir de string HTML — $('<div>...') */
+    
     const $t = $('<div class="toast"><i data-lucide="'+(icon||'check')+'"></i><span>'+msg+'</span></div>');
     $('#toasts').append($t);                                       // ▸ DOM: .append()
     icons();
-    /* nativo: rAF espera um frame com opacity:0 antes do addClass —
-       sem isso a transição pode não rodar (aplicaria os 2 estados
-       no mesmo frame e o toast apareceria "seco") */
+   
     requestAnimationFrame(function(){ $t.addClass('in'); });        // ▸ CLASSES
+    
     setTimeout(function(){
       $t.removeClass('in');
       setTimeout(function(){ $t.remove(); }, 450);                 // ▸ DOM: .remove()
     }, 3000);
   }
-
+TIRAR COMENTARIO*/
   /* ============ CADERNO (salvar receitas) ============ */
   function toggleSave(id){
     const r = RECIPES.find(function(x){ return x.id === id; });    // nativo
@@ -516,7 +515,7 @@
         ? '<i data-lucide="bookmark-check"></i><span>Salva no caderno</span>'
         : '<i data-lucide="bookmark"></i><span>Salvar no caderno</span>');
     icons();
-  }
+  }/* TIRAR COMENTÁRIO
   // ▸ DELEGAÇÃO: cliques nas linhas do índice (criadas via .html())
   $('#recipe-list').on('click', '.r-row', function(){ openRecipe($(this).data('id')); });
   // acessibilidade por teclado
@@ -530,7 +529,7 @@
   });
   $('#modal-save').on('click', function(){ toggleSave($(this).data('id')); }); // ▸ EVENTOS
   $('#modal-close').on('click', closeAll);
-
+   TIRAR COMENTÁRIO */
   /* ============ DRAWER ============ */
   function openDrawer(){
     renderNotebook();
